@@ -1,0 +1,9 @@
+{
+  "name": "ZenLedger AI",
+  "description": "A privacy-focused, pure frontend accounting app syncing with GitHub, featuring iOS aesthetics and Gemini AI integration.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}

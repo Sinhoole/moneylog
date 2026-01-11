@@ -1,0 +1,239 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="description" content="ZenLedger AI - Personal Finance" />
+    <title>ZenLedger AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', 'sans-serif'],
+              serif: ['Georgia', 'Times New Roman', 'Times', 'serif'],
+              headline: ['Impact', 'Haettenschweiler', 'Arial Narrow Bold', 'sans-serif'],
+            },
+            colors: {
+              ios: {
+                bg: '#f2f2f7',
+                card: '#ffffff',
+                blue: '#007aff',
+                green: '#34c759',
+                red: '#ff3b30',
+                gray: '#8e8e93',
+                separator: '#c6c6c8',
+              },
+              dark: {
+                bg: '#000000',
+                card: '#1c1c1e',
+                separator: '#38383a',
+              },
+              paper: {
+                bg: '#fdf6e3',
+                ink: '#2b2b2b',
+                line: '#d3c5a3'
+              }
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+              'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(15px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              }
+            }
+          },
+        },
+      }
+    </script>
+    <style>
+      /* Global Reset & Base */
+      body {
+        -webkit-tap-highlight-color: transparent;
+        overscroll-behavior-y: none;
+        background-color: #f2f2f7;
+        /* Dynamic subtle gradient background */
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.08) 0px, transparent 50%),
+          radial-gradient(at 100% 0%, rgba(255, 59, 48, 0.03) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(52, 199, 89, 0.05) 0px, transparent 50%);
+        background-attachment: fixed;
+      }
+      .dark body {
+        background-color: #000000;
+        background-image: 
+          radial-gradient(at 0% 0%, rgba(0, 122, 255, 0.15) 0px, transparent 50%),
+          radial-gradient(at 100% 100%, rgba(52, 199, 89, 0.1) 0px, transparent 50%);
+      }
+
+      ::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+      }
+
+      /* Glassmorphism & Skeuomorphism Utilities */
+      .glass-morphism {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border-top: 1px solid rgba(255, 255, 255, 0.5);
+      }
+      .dark .glass-morphism {
+        background: rgba(28, 28, 30, 0.7);
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .skeuo-card {
+        background: rgba(255, 255, 255, 0.65);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+        box-shadow: 
+          0 4px 6px -1px rgba(0, 0, 0, 0.02), 
+          0 10px 15px -3px rgba(0, 0, 0, 0.03),
+          inset 0 1px 0 rgba(255, 255, 255, 0.9);
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.2s ease;
+      }
+      .dark .skeuo-card {
+        background: rgba(30, 30, 32, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 
+          0 4px 6px -1px rgba(0, 0, 0, 0.3),
+          inset 0 1px 0 rgba(255, 255, 255, 0.05);
+      }
+      .skeuo-card:active {
+        transform: scale(0.98);
+      }
+      
+      .skeuo-btn {
+        position: relative;
+        overflow: hidden;
+        transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+      }
+      .skeuo-btn:active {
+        transform: scale(0.96);
+        box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+      }
+      .skeuo-btn::after {
+        content: '';
+        position: absolute;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: linear-gradient(to bottom, rgba(255,255,255,0.2) 0%, transparent 100%);
+        pointer-events: none;
+      }
+
+      .inner-shadow {
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.05);
+        border: 1px solid rgba(0,0,0,0.05);
+      }
+      .dark .inner-shadow {
+        box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.4);
+        border: 1px solid rgba(255,255,255,0.05);
+      }
+
+      /* Animation Staggering */
+      .stagger-1 { animation-delay: 50ms; }
+      .stagger-2 { animation-delay: 100ms; }
+      .stagger-3 { animation-delay: 150ms; }
+      .stagger-4 { animation-delay: 200ms; }
+      .stagger-5 { animation-delay: 250ms; }
+      .stagger-6 { animation-delay: 300ms; }
+
+      /* Markdown Styles */
+      .markdown-body h1 { font-size: 1.5em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+      .markdown-body h2 { font-size: 1.25em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+      .markdown-body h3 { font-size: 1.1em; font-weight: bold; margin-top: 1em; margin-bottom: 0.5em; }
+      .markdown-body p { margin-bottom: 1em; line-height: 1.6; }
+      .markdown-body ul { list-style-type: disc; padding-left: 1.5em; margin-bottom: 1em; }
+      .markdown-body ol { list-style-type: decimal; padding-left: 1.5em; margin-bottom: 1em; }
+      .markdown-body table { width: 100%; border-collapse: collapse; margin-bottom: 1em; font-size: 0.9em; }
+      .markdown-body th, .markdown-body td { border: 1px solid #e5e7eb; padding: 8px; text-align: left; }
+      .dark .markdown-body th, .dark .markdown-body td { border-color: #38383a; }
+      .markdown-body th { background-color: #f3f4f6; font-weight: 600; }
+      .dark .markdown-body th { background-color: #1c1c1e; }
+      .markdown-body code { background-color: rgba(175, 184, 193, 0.2); padding: 0.2em 0.4em; border-radius: 6px; font-family: monospace; }
+
+      /* Old Newspaper Theme */
+      .newspaper-theme {
+        background-color: #fdf6e3;
+        color: #2b2b2b;
+        font-family: "Georgia", "Times New Roman", serif;
+        background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%239C92AC' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        box-shadow: 
+          0 1px 1px rgba(0,0,0,0.1), 
+          0 8px 0 -4px #eee, 
+          0 8px 1px -3px rgba(0,0,0,0.1), 
+          0 16px 0 -8px #e5e5e5, 
+          0 16px 1px -7px rgba(0,0,0,0.1);
+        transform: rotate(0deg); /* Explicitly NO rotation */
+        transition: transform 0.3s ease;
+      }
+      .newspaper-theme:hover {
+        /* Subtle lift instead of rotation */
+        transform: translateY(-2px); 
+      }
+      
+      .newspaper-body h1, .newspaper-body h2 {
+        font-family: "Impact", "Georgia", serif;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        border-bottom: 2px solid #2b2b2b;
+        padding-bottom: 0.5rem;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+      }
+      .newspaper-body h3 {
+         font-family: "Georgia", serif;
+         font-style: italic;
+         border-bottom: 1px solid #d3c5a3;
+         padding-bottom: 0.25rem;
+         margin-top: 1.5rem;
+      }
+      .newspaper-body p {
+        font-size: 1.05rem;
+        line-height: 1.6;
+        text-align: justify;
+      }
+      .newspaper-body table {
+        border: 2px solid #2b2b2b;
+        margin: 1.5rem 0;
+      }
+      .newspaper-body th {
+        background-color: #2b2b2b;
+        color: #fdf6e3;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        font-weight: normal;
+        border: 1px solid #2b2b2b;
+      }
+      .newspaper-body td {
+        border: 1px solid #d3c5a3;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.35.0",
+    "recharts": "https://esm.sh/recharts@^3.6.0",
+    "lucide-react": "https://esm.sh/lucide-react@^0.562.0",
+    "react-markdown": "https://esm.sh/react-markdown@9",
+    "html2canvas": "https://esm.sh/html2canvas@1.4.1"
+  }
+}
+</script>
+</head>
+  <body class="bg-ios-bg dark:bg-dark-bg text-black dark:text-white transition-colors duration-200 antialiased selection:bg-ios-blue selection:text-white">
+    <div id="root"></div>
+  </body>
+</html>
